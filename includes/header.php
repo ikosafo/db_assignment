@@ -282,7 +282,7 @@ function getCompNameHeader($text)
           </ul>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == "/viewcustomers.php" ? "active" : ""); ?>">
           <a class="d-flex align-items-center" href="viewcustomers">
             <i data-feather="user-check"></i>
             <span class="menu-title text-truncate" data-i18n="View Customers">View Customers</span>

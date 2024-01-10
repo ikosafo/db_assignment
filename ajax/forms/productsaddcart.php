@@ -92,14 +92,7 @@ if ($query === false) {
             oTable.search($(this).val()).draw();
         });
     });
-    /*  $('#table-data').DataTable({
-         "paging": false,
-         "searching": false
-     });
-     // Enable search in the DataTable
-     $('#searchtxt').on('keyup', function() {
-         oTable.search($(this).val()).draw();
-     }); */
+
 
     $(document).ready(function() {
         // Initialize TouchSpin for dynamically generated inputs

@@ -59,9 +59,14 @@ class ProductManager
             $lastTemSalesNo = $row['lastTemSalesNo'];
             $temSalesNo = $lastTemSalesNo + 1;
 
-            $insertQuery = "INSERT INTO dbo.tempOrder ([temSalesNo], [productNo], [quantity], [genNo]) VALUES (?, ?, ?, ?)";
+            /*  $insertQuery = "INSERT INTO dbo.tempOrder ([temSalesNo], [productNo], [quantity], [genNo]) VALUES (?, ?, ?, ?)";
             $insertParams = array($temSalesNo, $productNo, $quantity, $genNo);
-            $insertStmt = sqlsrv_prepare($this->conn, $insertQuery, $insertParams);
+            $insertStmt = sqlsrv_prepare($this->conn, $insertQuery, $insertParams); */
+
+            $insertStoredProcedure = "{call dbo.InsertTempOrder(?, ?, ?, ?)}";
+            $insertParams = array($temSalesNo, $productNo, $quantity, $genNo);
+            $insertStmt = sqlsrv_prepare($this->conn, $insertStoredProcedure, $insertParams);
+
 
             if ($insertStmt === false) {
                 die(print_r(sqlsrv_errors(), true));
