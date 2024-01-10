@@ -215,21 +215,9 @@ function getCompNameHeader($text)
         </li>
 
         <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <div class="user-nav d-sm-flex d-none"><span class="user-name fw-bolder">
-                🎉 Welcome <span style="text-transform: uppercase;"><?php echo $username; ?></span>
-              </span><span class="user-status">
-                <?php
-                if ($perm == '1') {
-                  echo $fullname = "Admin";
-                } else {
-                  $getfullname = $mysqli->query("select * from staff where username = '$username'");
-                  $resfullname = $getfullname->fetch_assoc();
-                  $fullname = $resfullname['fullname'];
-                  echo "Staff";
-                }
-
-                ?>
-              </span></div><span class="avatar"></span>
+            <div class="user-nav d-sm-flex d-none"><span class="user-name">
+                Welcome <span class="fw-bolder"><?php echo $username; ?></span>
+              </span></div>
           </a>
           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
             <a class="dropdown-item" href="profile"><i class="me-50" data-feather="user"></i> Profile</a>
@@ -258,6 +246,13 @@ function getCompNameHeader($text)
     <div class="shadow-bottom"></div>
     <div class="main-menu-content mt-1">
       <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+
+        <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == "/admin_index.php" ? "active" : ""); ?>">
+          <a class="d-flex align-items-center" href="admin_index">
+            <i data-feather="airplay"></i>
+            <span class="menu-title text-truncate" data-i18n="View Customers">Dashboard</span>
+          </a>
+        </li>
 
         <li class="nav-item">
           <a class="d-flex align-items-center" href="#">
@@ -290,28 +285,34 @@ function getCompNameHeader($text)
         </li>
 
 
-        <li class="nav-item">
-          <a class="d-flex align-items-center" href="#">
-            <i data-feather="dollar-sign"></i>
-            <span class="menu-title text-truncate" data-i18n="Sales">Orders</span>
-          </a>
-          <ul class="menu-content">
+        <?php
+        $getpermission = sqlsrv_query($conn, "SELECT * FROM dho.userpermission WHERE userid = '$user_id' 
+    AND (permission = 'View and Process Orders' OR permission = 'Package Order')");
 
-            <li class="<?php echo ($_SERVER['PHP_SELF'] == "/addsale.php" ? "active" : ""); ?>">
-              <a class="d-flex align-items-center" href="addsale">
-                <i data-feather="circle"></i>
-                <span class="menu-item text-truncate" data-i18n="AddS">View Orders</span>
-              </a>
-            </li>
-            <li class="<?php echo ($_SERVER['PHP_SELF'] == "/viewsales.php" ? "active" : ""); ?>">
-              <a class="d-flex align-items-center" href="viewsales">
-                <i data-feather="circle"></i>
-                <span class="menu-item text-truncate" data-i18n="Preview">Track Orders</span>
-              </a>
-            </li>
+        if ($getpermission !== false && sqlsrv_has_rows($getpermission) || $perm == '1') { ?>
+          <li class="nav-item">
+            <a class="d-flex align-items-center" href="#">
+              <i data-feather="dollar-sign"></i>
+              <span class="menu-title text-truncate" data-i18n="Sales">Orders</span>
+            </a>
+            <ul class="menu-content">
+              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/vieworders.php" ? "active" : ""); ?>">
+                <a class="d-flex align-items-center" href="vieworders">
+                  <i data-feather="circle"></i>
+                  <span class="menu-item text-truncate" data-i18n="ViewOrders">View Orders</span>
+                </a>
+              </li>
+              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/trackorders.php" ? "active" : ""); ?>">
+                <a class="d-flex align-items-center" href="trackorders">
+                  <i data-feather="circle"></i>
+                  <span class="menu-item text-truncate" data-i18n="Preview">Track Orders</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        <?php } ?>
 
-          </ul>
-        </li>
+
 
         <li class="nav-item">
           <a class="d-flex align-items-center" href="#">

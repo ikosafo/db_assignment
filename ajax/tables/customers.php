@@ -54,7 +54,7 @@ include("../../system_functions.php");
                         echo "<td>" . $row['DOB']->format('Y-m-d') . "</td>";
                         echo "<td>" . $row['maritalStatus'] . "</td>";
                         echo "<td>" . $row['creditRating'] . "</td>";
-                        echo "<td>" . getUserDetails($row['customerNo']) . "</td>";
+                        echo "<td>" . getCustomerDetails($row['customerNo']) . "</td>";
                         echo "</tr>";
                     }
                     ?>
