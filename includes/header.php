@@ -19,14 +19,14 @@ if (isset($_SESSION['username'])) {
       $user_id = '';
       $perm = '1';
     } else {
-      $getUserIDQuery = "SELECT * FROM dbo.staff WHERE username = ?";
+      $getUserIDQuery = "SELECT * FROM dbo.Employee WHERE username = ?";
       $getUserIDStmt = sqlsrv_query($conn, $getUserIDQuery, $params);
 
       if ($getUserIDStmt) {
         $rowUserID = sqlsrv_fetch_array($getUserIDStmt, SQLSRV_FETCH_ASSOC);
 
         if ($rowUserID) {
-          $user_id = $rowUserID['stid'];
+          $user_id = $rowUserID['employeeNo'];
           $perm = '2';
         } else {
           // Handle query failure

@@ -44,6 +44,9 @@ include('../../config.php');
                 </div>
                 <div class="col-sm-9">
                     <select class="form-select" id="permissions" multiple>
+                        <option value="Manage Products">Manage Products</option>
+                        <option value="View Customers">View Customers</option>
+                        <option value="Manage Employees">Manage Employees</option>
                         <option value="View and Process Orders">View and Process Orders</option>
                         <option value="Package Order">Package Order</option>
                     </select>

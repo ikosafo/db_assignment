@@ -39,7 +39,7 @@ if ($query === false) {
                                     while ($r = sqlsrv_fetch_array($q, SQLSRV_FETCH_ASSOC)) {
                                         $permid = $r['permid'];
                                         echo $r['permission'] ?>
-
+                                        <br>
                                         <a class="deletepermissionbtn" title="Delete Permission" i_index=<?php echo $permid; ?>>
                                             <span class="icon-wrapper cursor-pointer" title="Delete Permission">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
@@ -49,7 +49,8 @@ if ($query === false) {
                                                     <line x1="14" y1="11" x2="14" y2="17"></line>
                                                 </svg>
                                             </span>
-                                        </a>
+                                        </a> <br>
+                                        <hr style="border-bottom: 0.5px solid rgb(230, 255, 230);">
                                     <?php } ?>
                                 </td>
                             </tr>

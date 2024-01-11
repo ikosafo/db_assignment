@@ -29,7 +29,7 @@ class UserAuthenticator
 
         $rowcount = sqlsrv_has_rows($stmt);
 
-        $queryStaff = "SELECT * FROM dbo.staff WHERE username = ? AND password = ?";
+        $queryStaff = "SELECT * FROM dbo.Employee WHERE username = ? AND password = ?";
         $stmtStaff = sqlsrv_query($this->conn, $queryStaff, $params);
 
         if ($stmtStaff === false) {

@@ -250,3 +250,21 @@ function processOrder($id)
         </a>
         </div>';
 }
+
+
+function getOrderCountForGenNo($conn, $genNo)
+{
+    $query = "SELECT COUNT(*) AS orderCount FROM dbo.tempOrder WHERE genNo = ?";
+    $params = array($genNo);
+
+    $result = sqlsrv_query($conn, $query, $params);
+
+    if ($result === false) {
+        echo "Error fetching order count: </br>";
+        die(print_r(sqlsrv_errors(), true));
+    }
+
+    $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
+
+    return ($row) ? $row['orderCount'] : 0;
+}

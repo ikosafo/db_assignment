@@ -71,7 +71,7 @@
                 });
             },
             success: function(text) {
-                //alert(text);
+                alert(text);
                 $.ajax({
                     url: "ajax/tables/orders.php",
                     beforeSend: function() {

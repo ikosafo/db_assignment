@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Add event listener for after printing
     window.onafterprint = function() {
         // Redirect to a different page after printing
-        window.location.href = "/product_store";
+        window.location.href = "/";
     };
 
     // Handle the case where the user cancels the print dialog
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     var timeout = setTimeout(function() {
         if (window.location.href === originalUrl) {
             // Redirect if the URL is still the same (print dialog was cancelled)
-            window.location.href = "/product_store";
+            window.location.href = "/";
         }
     }, 30500); // Adjust the timeout duration as needed
 </script>

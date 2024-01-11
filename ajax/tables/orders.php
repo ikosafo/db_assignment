@@ -4,7 +4,6 @@ include('../../config.php');
 include("../../system_functions.php");
 
 ?>
-
 <section id="datatable">
 
     <form class="faq-search-input mb-1">
@@ -28,20 +27,20 @@ include("../../system_functions.php");
                         <th>Quantity</th>
                         <th>Unit Price</th>
                         <th>Total Price</th>
-                        <th rowspan="2">Customer Name</th>
-                        <th rowspan="2">Customer Telephone</th>
-                        <th rowspan="2">Action</th>
+                        <th>Customer Name</th>
+                        <th>Customer Telephone</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
                     <?php
-                    $prevGenNo = null; // To track the change in genNo
 
                     // Fetch records from the database
                     $query = "SELECT T.*, C.customerName, C.custTelNo
                     FROM dbo.tempOrder T
-                    INNER JOIN dbo.Customer C ON T.genNo = C.genNo WHERE T.status IS NULL
-                    ORDER BY T.genNo"; // Ordering by genNo for grouping
+                    INNER JOIN dbo.Customer C ON T.genNo = C.genNo
+                    WHERE T.status IS NULL
+                    ORDER BY T.genNo";
                     $result = sqlsrv_query($conn, $query);
 
                     if ($result === false) {
@@ -49,30 +48,28 @@ include("../../system_functions.php");
                         die(print_r(sqlsrv_errors(), true));
                     }
 
-                    while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-                        if ($prevGenNo !== $row['genNo']) {
-                            // If it's a new genNo, start a new row
-                            $prevGenNo = $row['genNo']; // Update genNo
+                    $prevGenNo = null; // To track the change in genNo
 
-                            // Start a new row for the new genNo
-                            echo "<tr>";
-                            echo "<td>" . getProductName($conn, $row['productNo']) . "</td>";
-                            echo "<td>" . $row['quantity'] . "</td>";
-                            echo "<td>" . getProductPrice($conn, $row['productNo']) . "</td>";
-                            echo "<td>" . number_format($row['quantity'] * getProductPrice($conn, $row['productNo']), 2) . "</td>";
-                            echo "<td rowspan='2'>" . $row['customerName'] . "</td>";
-                            echo "<td rowspan='2'>" . $row['custTelNo'] . "</td>";
-                            echo "<td rowspan='2'>" . processOrder($row['genNo']) . "</td>";
-                            echo "</tr>";
-                        } else {
-                            // Continue listing orders for the same genNo
-                            echo "<tr>";
-                            echo "<td>" . getProductName($conn, $row['productNo']) . "</td>";
-                            echo "<td>" . $row['quantity'] . "</td>";
-                            echo "<td>" . getProductPrice($conn, $row['productNo']) . "</td>";
-                            echo "<td>" . number_format($row['quantity'] * getProductPrice($conn, $row['productNo']), 2) . "</td>";
-                            echo "</tr>";
+                    while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                        echo "<tr>";
+                        echo "<td>" . getProductName($conn, $row['productNo']) . "</td>";
+                        echo "<td>" . $row['quantity'] . "</td>";
+                        echo "<td>" . getProductPrice($conn, $row['productNo']) . "</td>";
+                        echo "<td>" . number_format($row['quantity'] * getProductPrice($conn, $row['productNo']), 2) . "</td>";
+
+                        // Display customer-related information only once for each group
+                        if ($prevGenNo !== $row['genNo']) {
+                            $orderCount = getOrderCountForGenNo($conn, $row['genNo']);
+
+                            echo "<td rowspan='" . $orderCount . "'>" . $row['customerName'] . "</td>";
+                            echo "<td rowspan='" . $orderCount . "'>" . $row['custTelNo'] . "</td>";
+                            echo "<td rowspan='" . $orderCount . "'>" . processOrder($row['genNo']) . "</td>";
                         }
+
+                        echo "</tr>";
+
+                        // Update prevGenNo
+                        $prevGenNo = $row['genNo'];
                     }
                     ?>
                 </tbody>
