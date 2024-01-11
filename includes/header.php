@@ -299,13 +299,19 @@ function getCompNameHeader($text)
               <li class="<?php echo ($_SERVER['PHP_SELF'] == "/vieworders.php" ? "active" : ""); ?>">
                 <a class="d-flex align-items-center" href="vieworders">
                   <i data-feather="circle"></i>
-                  <span class="menu-item text-truncate" data-i18n="ViewOrders">View Orders</span>
+                  <span class="menu-item text-truncate" data-i18n="ViewOrders">Pending Orders</span>
                 </a>
               </li>
               <li class="<?php echo ($_SERVER['PHP_SELF'] == "/trackorders.php" ? "active" : ""); ?>">
                 <a class="d-flex align-items-center" href="trackorders">
                   <i data-feather="circle"></i>
-                  <span class="menu-item text-truncate" data-i18n="Preview">Track Orders</span>
+                  <span class="menu-item text-truncate" data-i18n="Preview">Completed Orders</span>
+                </a>
+              </li>
+              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/shippedorders.php" ? "active" : ""); ?>">
+                <a class="d-flex align-items-center" href="shippedorders">
+                  <i data-feather="circle"></i>
+                  <span class="menu-item text-truncate" data-i18n="Preview">Shipped Orders</span>
                 </a>
               </li>
             </ul>

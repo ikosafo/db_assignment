@@ -39,7 +39,7 @@ include("../../system_functions.php");
                     $query = "SELECT T.*, C.customerName, C.custTelNo
                     FROM dbo.tempOrder T
                     INNER JOIN dbo.Customer C ON T.genNo = C.genNo
-                    WHERE T.status = '1'
+                    WHERE T.status = '2'
                     ORDER BY T.genNo";
                     $result = sqlsrv_query($conn, $query);
 
@@ -63,7 +63,7 @@ include("../../system_functions.php");
 
                             echo "<td rowspan='" . $orderCount . "'>" . $row['customerName'] . "</td>";
                             echo "<td rowspan='" . $orderCount . "'>" . $row['custTelNo'] . "</td>";
-                            echo "<td rowspan='" . $orderCount . "'>" . processShipping($row['genNo']) . "</td>";
+                            echo "<td rowspan='" . $orderCount . "'>" . "Item Shipped" . "</td>";
                         }
 
                         echo "</tr>";

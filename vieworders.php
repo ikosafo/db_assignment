@@ -32,7 +32,6 @@
 <?php include('includes/footer.php') ?>
 
 <script>
-    //Load product table
     $.ajax({
         url: "ajax/tables/orders.php",
         beforeSend: function() {
@@ -54,8 +53,6 @@
 
 
 
-
-    //Edit product after icon click
     $(document).on('click', '.processorderbtn', function() {
         var id_index = $(this).attr('i_index');
         //alert(id_index);
@@ -71,7 +68,7 @@
                 });
             },
             success: function(text) {
-                alert(text);
+                //alert(text);
                 $.ajax({
                     url: "ajax/tables/orders.php",
                     beforeSend: function() {
@@ -99,70 +96,6 @@
             },
 
         });
-
-    });
-
-
-    //Delete product after icon click
-    $(document).off('click', '.deleteorderbtn').on('click', '.deleteorderbtn', function() {
-        var theindex = $(this).attr('i_index');
-        //alert(theindex);
-
-        $.confirm({
-            title: 'Delete Record!',
-            content: 'Are you sure to continue?',
-            buttons: {
-                no: {
-                    text: 'No',
-                    keys: ['enter', 'shift'],
-                    backdrop: 'static',
-                    keyboard: false,
-                    action: function() {
-                        $.alert('Data is safe');
-                    }
-                },
-                yes: {
-                    text: 'Yes, Delete it!',
-                    btnClass: 'btn-blue',
-                    action: function() {
-                        $.ajax({
-                            type: "POST",
-                            url: "ajax/queries/delete/order.php",
-                            data: {
-                                i_index: theindex
-                            },
-                            dataType: "html",
-                            success: function(text) {
-                                $.ajax({
-                                    url: "ajax/tables/orders.php",
-                                    beforeSend: function() {
-                                        $.blockUI({
-                                            message: '<h3 style="margin-top:6px"><img src="https://jquery.malsup.com/block/busy.gif" /> Just a moment...</h3>'
-                                        });
-                                    },
-                                    success: function(text) {
-                                        $('#pagetable_div').html(text);
-                                    },
-                                    error: function(xhr, ajaxOptions, thrownError) {
-                                        alert(xhr.status + " " + thrownError);
-                                    },
-                                    complete: function() {
-                                        $.unblockUI();
-                                    },
-
-                                });
-                            },
-
-                            complete: function() {},
-                            error: function(xhr, ajaxOptions, thrownError) {
-                                alert(xhr.status + " " + thrownError);
-                            }
-                        });
-                    }
-                }
-            }
-        });
-
 
     });
 </script>

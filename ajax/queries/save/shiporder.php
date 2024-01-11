@@ -15,7 +15,7 @@ class ProductManager
     {
         // Prepare and execute the SQL update statement
         $updateQuery = "UPDATE dbo.tempOrder SET status = ? WHERE genNo = ?";
-        $updateParams = array('1', $genNo);
+        $updateParams = array('2', $genNo);
 
         $stmt = sqlsrv_prepare($this->conn, $updateQuery, $updateParams);
         if ($stmt === false) {
@@ -60,8 +60,8 @@ class ProductManager
 
         // Insert into the corresponding Order table
         $orderQuery = "INSERT INTO dbo.[Order]
-       ([orderNo], [orderDate], [billingStreet], [billingCity], [billingState], [billingZipCode], [customerNo], [status], [genNo])
-       VALUES (?, GETDATE(), ?, ?, ?, ?, ?, ?, ?)";
+                ([orderNo], [orderDate], [billingStreet], [billingCity], [billingState], [billingZipCode], [customerNo], [status], [genNo])
+                VALUES (?, GETDATE(), ?, ?, ?, ?, ?, ?, ?)";
 
         // Adjust the column names based on your actual database structure
         $orderParams = array(
@@ -71,10 +71,9 @@ class ProductManager
             $customerData['customerState'],
             $customerData['customerZipCode'],
             $customerData['customerNo'],
-            'Processed',
+            'Packaged and Shipped',
             $genNo
         );
-
 
         $orderStmt = sqlsrv_query($this->conn, $orderQuery, $orderParams);
 

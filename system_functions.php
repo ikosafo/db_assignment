@@ -252,6 +252,18 @@ function processOrder($id)
 }
 
 
+//process to shipping Details
+function processShipping($id)
+{
+    return '
+        <div class="text-center">
+            <a href="#." class="processshipingbtn" title="Packaged and Shipped" i_index=' . $id . '>
+                Packaged and Shipped
+            </a> 
+        </div>';
+}
+
+
 function getOrderCountForGenNo($conn, $genNo)
 {
     $query = "SELECT COUNT(*) AS orderCount FROM dbo.tempOrder WHERE genNo = ?";
