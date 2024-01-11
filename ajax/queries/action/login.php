@@ -2,7 +2,6 @@
 include("../../../config.php");
 include("../../../system_functions.php");
 
-
 class UserAuthenticator
 {
     private $conn;
@@ -42,6 +41,13 @@ class UserAuthenticator
             $this->logError($username, $datetime, $mac_address, $ip_address);
             return 2; // Error: Wrong username or password
         } else {
+            // Fetch the employeeNo if available
+            if ($rowcountStaff > 0) {
+                $rowStaff = sqlsrv_fetch_array($stmtStaff, SQLSRV_FETCH_ASSOC);
+                $employeeNo = $rowStaff['employeeNo'];
+                $_SESSION['employeeNo'] = $employeeNo; // Store employeeNo in the session
+            }
+
             $this->logSuccess($username, $datetime, $mac_address, $ip_address);
             $_SESSION['username'] = $username;
             return 1; // Success: Logged in

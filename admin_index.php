@@ -19,9 +19,32 @@
               <div class="card-body">
                 <h5>Pending Orders</h5>
                 <h3 class="mb-75 mt-2 pt-50">
-                  <a href="#">$48.9k</a>
+                  <a href="#"> <?php
+
+                                // Count the number of rows where status = '1'
+                                $countQuery = "SELECT COUNT(*) AS TotalCount FROM dbo.tempOrder T
+                                INNER JOIN dbo.Customer C ON T.genNo = C.genNo
+                                WHERE T.status IS NULL";
+
+                                $countStmt = sqlsrv_query($conn, $countQuery);
+
+                                // Check for query execution success
+                                if ($countStmt === false) {
+                                  die(print_r(sqlsrv_errors(), true));
+                                }
+
+                                // Fetch the result
+                                $rowCountRow = sqlsrv_fetch_array($countStmt, SQLSRV_FETCH_ASSOC);
+
+                                // Extract the row count
+                                $rowCount = ($rowCountRow !== false && isset($rowCountRow['TotalCount'])) ? $rowCountRow['TotalCount'] : 0;
+
+                                // Output the row count
+                                echo $rowCount;
+                                ?>
+                  </a>
                 </h3>
-                <button type="button" class="btn btn-primary waves-effect waves-float waves-light">View all Orders</button>
+                <button type="button" class="btn btn-primary waves-effect waves-float waves-light">Go to Orders to process</button>
               </div>
             </div>
           </div>
@@ -35,7 +58,7 @@
               </div>
               <div class="card-body statistics-body">
                 <div class="row">
-                  <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                  <div class="col-xl-4 col-sm-6 col-12 mb-2 mb-xl-0">
                     <div class="d-flex flex-row">
                       <div class="avatar bg-light-primary me-2">
                         <div class="avatar-content">
@@ -46,12 +69,35 @@
                         </div>
                       </div>
                       <div class="my-auto">
-                        <h4 class="fw-bolder mb-0">230k</h4>
-                        <p class="card-text font-small-3 mb-0">Orders</p>
+                        <h4 class="fw-bolder mb-0">
+                          <?php
+
+                          // Count the number of rows where status = '1'
+                          $countQuery = "SELECT COUNT(*) AS TotalCount FROM dbo.tempOrder 
+                          WHERE status = '1'";
+                          $countStmt = sqlsrv_query($conn, $countQuery);
+
+                          // Check for query execution success
+                          if ($countStmt === false) {
+                            die(print_r(sqlsrv_errors(), true));
+                          }
+
+                          // Fetch the result
+                          $rowCountRow = sqlsrv_fetch_array($countStmt, SQLSRV_FETCH_ASSOC);
+
+                          // Extract the row count
+                          $rowCount = ($rowCountRow !== false && isset($rowCountRow['TotalCount'])) ? $rowCountRow['TotalCount'] : 0;
+
+                          // Output the row count
+                          echo $rowCount;
+                          ?>
+
+                        </h4>
+                        <p class="card-text font-small-3 mb-0">Completed Orders</p>
                       </div>
                     </div>
                   </div>
-                  <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-xl-0">
+                  <div class="col-xl-4 col-sm-6 col-12 mb-2 mb-xl-0">
                     <div class="d-flex flex-row">
                       <div class="avatar bg-light-info me-2">
                         <div class="avatar-content">
@@ -62,12 +108,32 @@
                         </div>
                       </div>
                       <div class="my-auto">
-                        <h4 class="fw-bolder mb-0">8.549k</h4>
+                        <h4 class="fw-bolder mb-0"> <?php
+
+                                                    // Count the number of rows where status = '1'
+                                                    $countQuery = "SELECT COUNT(*) AS TotalCount FROM dbo.Customer";
+                                                    $countStmt = sqlsrv_query($conn, $countQuery);
+
+                                                    // Check for query execution success
+                                                    if ($countStmt === false) {
+                                                      die(print_r(sqlsrv_errors(), true));
+                                                    }
+
+                                                    // Fetch the result
+                                                    $rowCountRow = sqlsrv_fetch_array($countStmt, SQLSRV_FETCH_ASSOC);
+
+                                                    // Extract the row count
+                                                    $rowCount = ($rowCountRow !== false && isset($rowCountRow['TotalCount'])) ? $rowCountRow['TotalCount'] : 0;
+
+                                                    // Output the row count
+                                                    echo $rowCount;
+                                                    ?>
+                        </h4>
                         <p class="card-text font-small-3 mb-0">Customers</p>
                       </div>
                     </div>
                   </div>
-                  <div class="col-xl-3 col-sm-6 col-12 mb-2 mb-sm-0">
+                  <div class="col-xl-4 col-sm-6 col-12 mb-2 mb-sm-0">
                     <div class="d-flex flex-row">
                       <div class="avatar bg-light-danger me-2">
                         <div class="avatar-content">
@@ -79,27 +145,32 @@
                         </div>
                       </div>
                       <div class="my-auto">
-                        <h4 class="fw-bolder mb-0">1.423k</h4>
+                        <h4 class="fw-bolder mb-0"> <?php
+
+                                                    // Count the number of rows where status = '1'
+                                                    $countQuery = "SELECT COUNT(*) AS TotalCount FROM dbo.Product";
+                                                    $countStmt = sqlsrv_query($conn, $countQuery);
+
+                                                    // Check for query execution success
+                                                    if ($countStmt === false) {
+                                                      die(print_r(sqlsrv_errors(), true));
+                                                    }
+
+                                                    // Fetch the result
+                                                    $rowCountRow = sqlsrv_fetch_array($countStmt, SQLSRV_FETCH_ASSOC);
+
+                                                    // Extract the row count
+                                                    $rowCount = ($rowCountRow !== false && isset($rowCountRow['TotalCount'])) ? $rowCountRow['TotalCount'] : 0;
+
+                                                    // Output the row count
+                                                    echo $rowCount;
+                                                    ?>
+                        </h4>
                         <p class="card-text font-small-3 mb-0">Products</p>
                       </div>
                     </div>
                   </div>
-                  <div class="col-xl-3 col-sm-6 col-12">
-                    <div class="d-flex flex-row">
-                      <div class="avatar bg-light-success me-2">
-                        <div class="avatar-content">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign avatar-icon">
-                            <line x1="12" y1="1" x2="12" y2="23"></line>
-                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="my-auto">
-                        <h4 class="fw-bolder mb-0">$9745</h4>
-                        <p class="card-text font-small-3 mb-0">Revenue</p>
-                      </div>
-                    </div>
-                  </div>
+
                 </div>
               </div>
             </div>

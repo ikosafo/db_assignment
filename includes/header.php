@@ -254,39 +254,55 @@ function getCompNameHeader($text)
           </a>
         </li>
 
-        <li class="nav-item">
-          <a class="d-flex align-items-center" href="#">
-            <i data-feather="shopping-cart"></i>
-            <span class="menu-title text-truncate">Products</span>
-          </a>
-          <ul class="menu-content">
 
-            <li class="<?php echo ($_SERVER['PHP_SELF'] == "/addproduct.php" ? "active" : ""); ?>">
-              <a class="d-flex align-items-center" href="addproduct">
-                <i data-feather="circle"></i>
-                <span class="menu-item text-truncate">Add Product</span>
-              </a>
-            </li>
-            <li class="<?php echo ($_SERVER['PHP_SELF'] == "/viewproducts.php" ? "active" : ""); ?>">
-              <a class="d-flex align-items-center" href="viewproducts">
-                <i data-feather="circle"></i>
-                <span class="menu-item text-truncate">View Products</span>
-              </a>
-            </li>
+        <?php
+        $getpermission = sqlsrv_query($conn, "SELECT * FROM dbo.userpermission WHERE userid = '$user_id' 
+    AND permission = 'Manage Products'");
 
-          </ul>
-        </li>
+        if ($getpermission !== false && sqlsrv_has_rows($getpermission) || $perm == '1') { ?>
+          <li class="nav-item">
+            <a class="d-flex align-items-center" href="#">
+              <i data-feather="shopping-cart"></i>
+              <span class="menu-title text-truncate">Products</span>
+            </a>
+            <ul class="menu-content">
+              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/addproduct.php" ? "active" : ""); ?>">
+                <a class="d-flex align-items-center" href="addproduct">
+                  <i data-feather="circle"></i>
+                  <span class="menu-item text-truncate">Add Product</span>
+                </a>
+              </li>
+              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/viewproducts.php" ? "active" : ""); ?>">
+                <a class="d-flex align-items-center" href="viewproducts">
+                  <i data-feather="circle"></i>
+                  <span class="menu-item text-truncate">View Products</span>
+                </a>
+              </li>
 
-        <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == "/viewcustomers.php" ? "active" : ""); ?>">
-          <a class="d-flex align-items-center" href="viewcustomers">
-            <i data-feather="user-check"></i>
-            <span class="menu-title text-truncate" data-i18n="View Customers">View Customers</span>
-          </a>
-        </li>
+            </ul>
+          </li>
+        <?php }
+
+
+
+        $getpermission = sqlsrv_query($conn, "SELECT * FROM dbo.userpermission WHERE userid = '$user_id' 
+    AND permission = 'View Customers'");
+        if ($getpermission !== false && sqlsrv_has_rows($getpermission) || $perm == '1') {
+        ?>
+
+          <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == "/viewcustomers.php" ? "active" : ""); ?>">
+            <a class="d-flex align-items-center" href="viewcustomers">
+              <i data-feather="user-check"></i>
+              <span class="menu-title text-truncate" data-i18n="View Customers">View Customers</span>
+            </a>
+          </li>
 
 
         <?php
-        $getpermission = sqlsrv_query($conn, "SELECT * FROM dho.userpermission WHERE userid = '$user_id' 
+        }
+
+
+        $getpermission = sqlsrv_query($conn, "SELECT * FROM dbo.userpermission WHERE userid = '$user_id' 
     AND (permission = 'View and Process Orders' OR permission = 'Package Order')");
 
         if ($getpermission !== false && sqlsrv_has_rows($getpermission) || $perm == '1') { ?>
@@ -296,59 +312,76 @@ function getCompNameHeader($text)
               <span class="menu-title text-truncate" data-i18n="Sales">Orders</span>
             </a>
             <ul class="menu-content">
-              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/vieworders.php" ? "active" : ""); ?>">
-                <a class="d-flex align-items-center" href="vieworders">
-                  <i data-feather="circle"></i>
-                  <span class="menu-item text-truncate" data-i18n="ViewOrders">Pending Orders</span>
-                </a>
-              </li>
-              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/trackorders.php" ? "active" : ""); ?>">
-                <a class="d-flex align-items-center" href="trackorders">
-                  <i data-feather="circle"></i>
-                  <span class="menu-item text-truncate" data-i18n="Preview">Completed Orders</span>
-                </a>
-              </li>
-              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/shippedorders.php" ? "active" : ""); ?>">
-                <a class="d-flex align-items-center" href="shippedorders">
-                  <i data-feather="circle"></i>
-                  <span class="menu-item text-truncate" data-i18n="Preview">Shipped Orders</span>
-                </a>
-              </li>
+
+              <?php
+              $getpermission = sqlsrv_query($conn, "SELECT * FROM dbo.userpermission 
+            WHERE userid = '$user_id' AND permission = 'View and Process Orders'");
+              if ($getpermission !== false && sqlsrv_has_rows($getpermission) || $perm == '1') { ?>
+
+                <li class="<?php echo ($_SERVER['PHP_SELF'] == "/vieworders.php" ? "active" : ""); ?>">
+                  <a class="d-flex align-items-center" href="vieworders">
+                    <i data-feather="circle"></i>
+                    <span class="menu-item text-truncate" data-i18n="ViewOrders">Pending Orders</span>
+                  </a>
+                </li>
+
+              <?php }
+              $getpermission = sqlsrv_query($conn, "SELECT * FROM dbo.userpermission 
+            WHERE userid = '$user_id' AND permission = 'Package Order'");
+              if ($getpermission !== false && sqlsrv_has_rows($getpermission) || $perm == '1') { ?>
+
+                <li class="<?php echo ($_SERVER['PHP_SELF'] == "/trackorders.php" ? "active" : ""); ?>">
+                  <a class="d-flex align-items-center" href="trackorders">
+                    <i data-feather="circle"></i>
+                    <span class="menu-item text-truncate" data-i18n="Preview">Completed Orders</span>
+                  </a>
+                </li>
+                <li class="<?php echo ($_SERVER['PHP_SELF'] == "/shippedorders.php" ? "active" : ""); ?>">
+                  <a class="d-flex align-items-center" href="shippedorders">
+                    <i data-feather="circle"></i>
+                    <span class="menu-item text-truncate" data-i18n="Preview">Shipped Orders</span>
+                  </a>
+                </li>
+              <?php } ?>
             </ul>
           </li>
+        <?php }
+
+        $getpermission = sqlsrv_query($conn, "SELECT * FROM dbo.userpermission 
+            WHERE userid = '$user_id' AND permission = 'Manage Employees'");
+
+        if ($getpermission !== false && sqlsrv_has_rows($getpermission) || $perm == '1') { ?>
+          <li class="nav-item">
+            <a class="d-flex align-items-center" href="#">
+              <i data-feather="users"></i>
+              <span class="menu-title text-truncate" data-i18n="Users">Employees</span>
+            </a>
+            <ul class="menu-content">
+
+              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/addemployee.php" ? "active" : ""); ?>">
+                <a class="d-flex align-items-center" href="addemployee">
+                  <i data-feather="circle"></i>
+                  <span class="menu-item text-truncate" data-i18n="AddU">Add Employee</span>
+                </a>
+              </li>
+              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/viewemployees.php" ? "active" : ""); ?>">
+                <a class="d-flex align-items-center" href="viewemployees">
+                  <i data-feather="circle"></i>
+                  <span class="menu-item text-truncate" data-i18n="ViewU">View Employees</span>
+                </a>
+              </li>
+
+              <li class="<?php echo ($_SERVER['PHP_SELF'] == "/userpermissions.php" ? "active" : ""); ?>">
+                <a class="d-flex align-items-center" href="userpermissions">
+                  <i data-feather="circle"></i>
+                  <span class="menu-item text-truncate" data-i18n="Permissions">User Permissions</span>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
         <?php } ?>
-
-
-
-        <li class="nav-item">
-          <a class="d-flex align-items-center" href="#">
-            <i data-feather="users"></i>
-            <span class="menu-title text-truncate" data-i18n="Users">Employees</span>
-          </a>
-          <ul class="menu-content">
-
-            <li class="<?php echo ($_SERVER['PHP_SELF'] == "/addemployee.php" ? "active" : ""); ?>">
-              <a class="d-flex align-items-center" href="addemployee">
-                <i data-feather="circle"></i>
-                <span class="menu-item text-truncate" data-i18n="AddU">Add Employee</span>
-              </a>
-            </li>
-            <li class="<?php echo ($_SERVER['PHP_SELF'] == "/viewemployees.php" ? "active" : ""); ?>">
-              <a class="d-flex align-items-center" href="viewemployees">
-                <i data-feather="circle"></i>
-                <span class="menu-item text-truncate" data-i18n="ViewU">View Employees</span>
-              </a>
-            </li>
-
-            <li class="<?php echo ($_SERVER['PHP_SELF'] == "/userpermissions.php" ? "active" : ""); ?>">
-              <a class="d-flex align-items-center" href="userpermissions">
-                <i data-feather="circle"></i>
-                <span class="menu-item text-truncate" data-i18n="Permissions">User Permissions</span>
-              </a>
-            </li>
-
-          </ul>
-        </li>
 
 
         <li class="navigation-header">

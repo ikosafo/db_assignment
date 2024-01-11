@@ -60,8 +60,8 @@ class ProductManager
 
         // Insert into the corresponding Order table
         $orderQuery = "INSERT INTO dbo.[Order]
-                ([orderNo], [orderDate], [billingStreet], [billingCity], [billingState], [billingZipCode], [customerNo], [status], [genNo])
-                VALUES (?, GETDATE(), ?, ?, ?, ?, ?, ?, ?)";
+       ([orderNo], [orderDate], [billingStreet], [billingCity], [billingState], [billingZipCode], [customerNo], [status], [employeeNo],[genNo])
+       VALUES (?, GETDATE(), ?, ?, ?, ?, ?, ?, ?,?)";
 
         // Adjust the column names based on your actual database structure
         $orderParams = array(
@@ -72,6 +72,7 @@ class ProductManager
             $customerData['customerZipCode'],
             $customerData['customerNo'],
             'Packaged and Shipped',
+            $_SESSION['employeeNo'],
             $genNo
         );
 
