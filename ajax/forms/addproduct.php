@@ -148,26 +148,21 @@ $random = rand(1, 10) . date("Y-m-d");
                 success: function(text) {
                     //alert(text);
 
-                    if (text == 1) {
-                        $.notify("Product Saved", "success", {
-                            position: "top center"
-                        });
-                        $.ajax({
-                            url: "ajax/tables/productsview.php",
-                            success: function(text) {
-                                $('#productsviewdiv').html(text);
-                            },
-                            error: function(xhr, ajaxOptions, thrownError) {
-                                alert(xhr.status + " " + thrownError);
-                            },
-                        });
-                        var stepper = new Stepper(document.querySelector('.bs-stepper'))
-                        stepper.to(2);
-                    } else {
-                        $.notify("Product already exists", "error", {
-                            position: "top center"
-                        });
-                    }
+                    $.notify("Product Saved", "success", {
+                        position: "top center"
+                    });
+                    $.ajax({
+                        url: "ajax/tables/productsview.php",
+                        success: function(text) {
+                            $('#productsviewdiv').html(text);
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            alert(xhr.status + " " + thrownError);
+                        },
+                    });
+                    var stepper = new Stepper(document.querySelector('.bs-stepper'))
+                    stepper.to(2);
+
 
                 },
                 error: function(xhr, ajaxOptions, thrownError) {

@@ -83,6 +83,7 @@
                             },
                             dataType: "html",
                             success: function(text) {
+                                //alert(text);
                                 $.ajax({
                                     url: "ajax/tables/customers.php",
                                     beforeSend: function() {

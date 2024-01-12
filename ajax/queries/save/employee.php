@@ -5,6 +5,7 @@ include("../../../system_functions.php");
 class ProductManager
 {
     private $conn;
+
     public function __construct($conn)
     {
         $this->conn = $conn;
@@ -30,58 +31,40 @@ class ProductManager
         $username,
         $password
     ) {
-        // Check if username already exists
-        $checkUsernameQuery = "SELECT COUNT(*) AS usernameCount FROM dbo.Employee WHERE username = ?";
-        $checkStmt = sqlsrv_prepare($this->conn, $checkUsernameQuery, array($username));
-        if ($checkStmt === false) {
-            die(print_r(sqlsrv_errors(), true));
-        }
-
-        $checkResult = sqlsrv_execute($checkStmt);
-        if ($checkResult === false) {
-            die(print_r(sqlsrv_errors(), true));
-        }
-
-        $usernameRow = sqlsrv_fetch_array($checkStmt, SQLSRV_FETCH_ASSOC);
-        $usernameCount = $usernameRow['usernameCount'];
-
-        if ($usernameCount > 0) {
-            return 3; // Username already exists
-        }
-
-        // Encrypt the password
-        $encryptedPassword = md5($password);
-
-        // Get the last employeeNo from dbo.Employee table
-        $getLastEmployeeNoQuery = "SELECT MAX(employeeNo) AS lastEmployeeNo FROM dbo.Employee";
-        $getLastEmployeeNoStmt = sqlsrv_query($this->conn, $getLastEmployeeNoQuery);
-
-        if ($getLastEmployeeNoStmt === false) {
-            die(print_r(sqlsrv_errors(), true));
-        }
-
-        $row = sqlsrv_fetch_array($getLastEmployeeNoStmt, SQLSRV_FETCH_ASSOC);
-        $lastEmployeeNo = $row['lastEmployeeNo'];
-
-        // Increment the last employeeNo by 1 to generate a unique employee number
-        $employeeNo = $lastEmployeeNo + 1;
-
-
-        $insertQuery = "INSERT INTO dbo.Employee 
-                    (employeeNo, title, firstName, middleName, lastName, address, workTelExt, homeTelNo, empEmailAddress, socialSecurityNumber, DOB, position, sex, salary, dateStarted, username, password)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Prepare the SQL query with a parameter placeholder for the stored procedure
+        $insertQuery = "{CALL AddEmployee(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         $insertParams = array(
-            $employeeNo, $title, $firstName, $middleName, $lastName, $address, $workTelExt, $homeTelNo, $empEmailAddress, $socialSecurityNumber, $DOB, $position, $sex, $salary, $dateStarted, $username, $encryptedPassword
+            array($title, SQLSRV_PARAM_IN),
+            array($firstName, SQLSRV_PARAM_IN),
+            array($middleName, SQLSRV_PARAM_IN),
+            array($lastName, SQLSRV_PARAM_IN),
+            array($address, SQLSRV_PARAM_IN),
+            array($workTelExt, SQLSRV_PARAM_IN),
+            array($homeTelNo, SQLSRV_PARAM_IN),
+            array($empEmailAddress, SQLSRV_PARAM_IN),
+            array($socialSecurityNumber, SQLSRV_PARAM_IN),
+            array($DOB, SQLSRV_PARAM_IN),
+            array($position, SQLSRV_PARAM_IN),
+            array($sex, SQLSRV_PARAM_IN),
+            array($salary, SQLSRV_PARAM_IN),
+            array($dateStarted, SQLSRV_PARAM_IN),
+            array($username, SQLSRV_PARAM_IN),
+            array($password, SQLSRV_PARAM_IN)
         );
 
+        // Prepare the SQL statement
         $stmt = sqlsrv_prepare($this->conn, $insertQuery, $insertParams);
+
         if ($stmt === false) {
+            // Handle prepare statement error
             die(print_r(sqlsrv_errors(), true));
         }
 
+        // Execute the prepared statement
         $insertResult = sqlsrv_execute($stmt);
 
         if ($insertResult === false) {
+            // Handle insertion error
             die(print_r(sqlsrv_errors(), true));
         }
 

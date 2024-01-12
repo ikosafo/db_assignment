@@ -4,7 +4,7 @@ include('../../config.php');
 include("../../system_functions.php");
 
 ?>
-<section id="datatable">
+<section id="customer-datatable">
 
     <form class="faq-search-input mb-1">
         <div class="input-group input-group-merge">
@@ -14,13 +14,13 @@ include("../../system_functions.php");
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
             </div>
-            <input type="text" class="form-control" id="searchtxt" placeholder="Search ...">
+            <input type="text" class="form-control" id="customer-searchtxt" placeholder="Search ...">
         </div>
     </form>
 
     <div class="row">
         <div class="col-12 ml-5 mr-5">
-            <table class="table mt-2 table-md" id="table-data">
+            <table class="table mt-2 table-md" id="customer-table-data">
                 <thead>
                     <tr>
                         <th width="15%">Full Name</th>
@@ -29,23 +29,23 @@ include("../../system_functions.php");
                         <th width="10%">Fax Number</th>
                         <th width="10%">Date of Birth</th>
                         <th width="10%">Marital Status</th>
-                        <th width="5">Credit Rating</th>
+                        <th width="5%">Credit Rating</th>
                         <th width="10%">Action</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody">
+                <tbody id="customer-tableBody">
                     <?php
 
-                    // Fetch records from the database
-                    $query = "SELECT * FROM dbo.Customer";
-                    $result = sqlsrv_query($conn, $query);
+                    // Execute the stored procedure
+                    $execProcedure = "EXEC GetCustomerData";
+                    $execStmt = sqlsrv_query($conn, $execProcedure);
 
-                    if ($result === false) {
-                        echo "Error fetching data: </br>";
+                    if ($execStmt === false) {
+                        echo "Error executing stored procedure: </br>";
                         die(print_r(sqlsrv_errors(), true));
                     }
 
-                    while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                    while ($row = sqlsrv_fetch_array($execStmt, SQLSRV_FETCH_ASSOC)) {
                         echo "<tr>";
                         echo "<td>" . $row['customerName'] . "</td>";
                         echo "<td>" . $row['customerStreet'] . ", " . $row['customerCity'] . "<br>" . $row['customerState'] . " - " . $row['customerZipCode'] . "</td>";
@@ -59,7 +59,6 @@ include("../../system_functions.php");
                     }
                     ?>
                 </tbody>
-
             </table>
         </div>
     </div>
@@ -67,11 +66,10 @@ include("../../system_functions.php");
 </section>
 <!--/ Basic table -->
 
-
 <script>
     $(document).ready(function() {
         // DataTable initialization
-        var oTable = $('#table-data').DataTable({
+        var oTable = $('#customer-table-data').DataTable({
             stateSave: true,
             "bLengthChange": false,
             dom: "Bfrtip",
@@ -87,7 +85,7 @@ include("../../system_functions.php");
         });
 
         // Enable search in the DataTable
-        $('#searchtxt').on('keyup', function() {
+        $('#customer-searchtxt').on('keyup', function() {
             oTable.search($(this).val()).draw();
         });
     });

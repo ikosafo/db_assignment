@@ -5,21 +5,25 @@ include("../../../system_functions.php");
 $username = $_SESSION['username'];
 $theid = $_POST['i_index']; // Assuming $conn is the SQL Server connection from your config.php
 
-// Delete employee
-$sql = "DELETE FROM dbo.Customer WHERE customerNo = ?";
-$params = array($theid);
-$stmt = sqlsrv_prepare($conn, $sql, $params);
+// Execute the stored procedure
+$deleteProcedure = "{CALL DeleteCustomer(?)}";
+$deleteParams = array($theid);
+$deleteStmt = sqlsrv_query($conn, $deleteProcedure, $deleteParams);
 
-if ($stmt === false) {
-    // Handle prepare statement error
-    die(print_r(sqlsrv_errors(), true));
-}
-
-$result = sqlsrv_execute($stmt);
-
-if ($result === false) {
+if ($deleteStmt === false) {
     // Handle execution error
+    echo "Error executing stored procedure: </br>";
     die(print_r(sqlsrv_errors(), true));
 }
 
-echo 1;
+// Check the result of the stored procedure
+$row = sqlsrv_fetch_array($deleteStmt, SQLSRV_FETCH_ASSOC);
+
+if ($row && $row['Result'] == 1) {
+    echo "Record deleted successfully!";
+} else {
+    echo "Error deleting record.";
+}
+
+// Close the SQL Server connection
+sqlsrv_close($conn);

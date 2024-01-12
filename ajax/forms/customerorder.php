@@ -44,8 +44,8 @@ $neworderid = $_GET['neworderid'];
             <label class="form-label" for="customermaritalstatus">Marital Status</label>
             <select class="form-select" id="customermaritalstatus">
                 <option></option>
-                <option value="Married">Married</option>
                 <option value="Single">Single</option>
+                <option value="Married">Married</option>
                 <option value="Divorced">Divorced</option>
                 <option value="Separated">Separated</option>
             </select>

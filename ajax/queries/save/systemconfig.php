@@ -1,5 +1,5 @@
 <?php
-include('../../../config.php');
+include("../../../config.php");
 include("../../../system_functions.php");
 
 class SystemConfiguration
@@ -13,30 +13,34 @@ class SystemConfiguration
 
     public function saveSystemConfig()
     {
+        // Retrieve POST data
         $companyname = $_POST['companyname'];
         $tagline = $_POST['tagline'];
         $telephone = $_POST['telephone'];
         $whatsapp = $_POST['whatsapp'];
         $emailaddress = $_POST['emailaddress'];
-        $currency = $_POST['currency'];
+        $currency = 'GHS';
         $address = $_POST['address'];
         $username = $_POST['username'];
         $password = md5($_POST['password']);
         $terms = $_POST['terms'];
         $sysconid = $_POST['sysconid'];
 
-        $mac_address = NetworkDetails::getMacAddress();
-        $ip_address = NetworkDetails::getRealIpAddress();
-        $datetime = date('Y-m-d H:i:s');
-
-        $insertSystemConfig = "INSERT INTO system_config 
-                                (companyname, tagline, address, telephone, whatsapp, emailaddress, currency, terms, username, password, sysconid)
-                                VALUES 
-                                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Execute stored procedure
+        $insertSystemConfig = "{CALL SaveSystemConfig(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         $params = array(
-            $companyname, $tagline, $address, $telephone, $whatsapp, $emailaddress,
-            $currency, $terms, $username, $password, $sysconid
+            array($companyname, SQLSRV_PARAM_IN),
+            array($tagline, SQLSRV_PARAM_IN),
+            array($address, SQLSRV_PARAM_IN),
+            array($telephone, SQLSRV_PARAM_IN),
+            array($whatsapp, SQLSRV_PARAM_IN),
+            array($emailaddress, SQLSRV_PARAM_IN),
+            array($currency, SQLSRV_PARAM_IN),
+            array($terms, SQLSRV_PARAM_IN),
+            array($username, SQLSRV_PARAM_IN),
+            array($password, SQLSRV_PARAM_IN),
+            array($sysconid, SQLSRV_PARAM_IN)
         );
 
         $stmt = sqlsrv_query($this->conn, $insertSystemConfig, $params);
@@ -45,22 +49,7 @@ class SystemConfiguration
             die(print_r(sqlsrv_errors(), true));
         }
 
-        $insertLogs = "INSERT INTO logs 
-                        (logdate, section, [message], [user], macaddress, ipaddress, action)
-                        VALUES 
-                        (?, ?, ?, ?, ?, ?, ?)";
-
-        $logParams = array(
-            $datetime, 'System Config', 'System configured successfully', $username,
-            $mac_address, $ip_address, 'Successful'
-        );
-
-        $stmtLogs = sqlsrv_query($this->conn, $insertLogs, $logParams);
-
-        if ($stmtLogs === false) {
-            die(print_r(sqlsrv_errors(), true));
-        }
-
+        // Output success message
         echo 1;
     }
 }

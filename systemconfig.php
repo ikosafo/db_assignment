@@ -56,7 +56,7 @@ $random = rand(1, 10) . date("Y-m-d");
                             <div class="invalid-feedback">Please enter email address</div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-12">
+                    <!--  <div class="col-md-6 col-12">
                         <div class="mb-1">
                             <label class="form-label" for="currency">Currency</label>
                             <select id="currency" class="form-select select2" aria-label="currency" required>
@@ -229,7 +229,7 @@ $random = rand(1, 10) . date("Y-m-d");
                             <div class="valid-feedback">Looks good!</div>
                             <div class="invalid-feedback">Please select currency</div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-6 col-12">
                         <div class="mb-1">
                             <label class="d-block form-label" for="address">Address</label>
@@ -238,8 +238,8 @@ $random = rand(1, 10) . date("Y-m-d");
                             <div class="invalid-feedback">Please enter your address.</div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-12">
-                        <div class="mb-1">
+                    <!-- <div class="col-md-6 col-12">
+                         <div class="mb-1">
                             <label class="form-label" for="logo">Logo</label>
                             <input id="file_upload" type="file" multiple="false" />
                             <div id="queue"></div>
@@ -248,7 +248,7 @@ $random = rand(1, 10) . date("Y-m-d");
                             <div class="valid-feedback">Looks good!</div>
                             <div class="invalid-feedback">Please enter tagline</div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-6 col-12">
                         <div class="mb-1">
                             <label class="form-label" for="username">System User</label>
@@ -294,7 +294,7 @@ $random = rand(1, 10) . date("Y-m-d");
 
 
 <script type="text/javascript">
-    $('#file_upload').uploadifive({
+    /*  $('#file_upload').uploadifive({
         'auto': false,
         //'checkScript'      : 'app-assets/uploadifive/check-exists.php',
         'uploadScript': 'ajax/queries/upload/sysconlogo.php',
@@ -330,7 +330,7 @@ $random = rand(1, 10) . date("Y-m-d");
             $("#selected").val('yes');
             //document.getElementById("submit").disabled = true;
         },
-    });
+    }); */
 
 
 
@@ -341,12 +341,11 @@ $random = rand(1, 10) . date("Y-m-d");
         var telephone = $("#telephone").val();
         var emailaddress = $("#emailaddress").val();
         var whatsapp = $("#whatsapp").val();
-        var currency = $("#currency").val();
-        var address = $("#address").val();
+        //var currency = $("#currency").val();
         var address = $("#address").val();
         var username = $("#username").val();
         var password = $("#password").val();
-        var selected = $("#selected").val();
+        //var selected = $("#selected").val();
         var sysconid = '<?php echo $random; ?>';
         var terms = $('input[name=agreed]:checked').val();
 
@@ -365,9 +364,9 @@ $random = rand(1, 10) . date("Y-m-d");
             $("#telephone").focus();
         }
 
-        if (currency == "") {
-            error += 'Please select currency \n';
-        }
+        /*  if (currency == "") {
+             error += 'Please select currency \n';
+         } */
         if (address == "") {
             error += 'Please enter address \n';
             $("#address").focus();
@@ -387,9 +386,9 @@ $random = rand(1, 10) . date("Y-m-d");
             error += 'Password length should not be less 6 \n';
             $("#password").focus();
         }
-        if (selected != "yes") {
-            error += 'Please upload logo \n';
-        }
+        /*  if (selected != "yes") {
+             error += 'Please upload logo \n';
+         } */
 
         if (error == "") {
             $.ajax({
@@ -406,7 +405,7 @@ $random = rand(1, 10) . date("Y-m-d");
                     telephone: telephone,
                     whatsapp: whatsapp,
                     emailaddress: emailaddress,
-                    currency: currency,
+                    //currency: currency,
                     address: address,
                     username: username,
                     password: password,
@@ -414,7 +413,8 @@ $random = rand(1, 10) . date("Y-m-d");
                     sysconid: sysconid
                 },
                 success: function(text) {
-                    $('#file_upload').uploadifive('upload');
+                    alert(text);
+                    //$('#file_upload').uploadifive('upload');
                     //alert(text);
                     window.location.href = "login";
                 },

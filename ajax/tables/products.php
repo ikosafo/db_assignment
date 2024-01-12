@@ -36,16 +36,16 @@ include("../../system_functions.php");
                 <tbody id="tableBody">
                     <?php
 
-                    // Fetch records from the database
-                    $query = "SELECT * FROM dbo.Product";
-                    $result = sqlsrv_query($conn, $query);
+                    // Execute the stored procedure
+                    $execProcedure = "EXEC GetProductData";
+                    $execStmt = sqlsrv_query($conn, $execProcedure);
 
-                    if ($result === false) {
-                        echo "Error fetching data: </br>";
+                    if ($execStmt === false) {
+                        echo "Error executing stored procedure: </br>";
                         die(print_r(sqlsrv_errors(), true));
                     }
 
-                    while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                    while ($row = sqlsrv_fetch_array($execStmt, SQLSRV_FETCH_ASSOC)) {
                         echo "<tr>";
                         echo "<td>" . $row['productName'] . "</td>";
                         echo "<td>" . $row['serialNo'] . "</td>";

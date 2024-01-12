@@ -5,6 +5,7 @@ include("../../../system_functions.php");
 class ProductManager
 {
     private $conn;
+
     public function __construct($conn)
     {
         $this->conn = $conn;
@@ -14,33 +15,28 @@ class ProductManager
 
     public function addProduct($productName, $quantity, $serialNumber, $reorderLevel, $reorderQuantity, $leadTime, $variations, $sellingPrice)
     {
-        // Get the last productNo from dbo.Product table
-        $getLastProductNoQuery = "SELECT MAX(productNo) AS lastProductNo FROM dbo.Product";
-        $getLastProductNoStmt = sqlsrv_query($this->conn, $getLastProductNoQuery);
-
-        if ($getLastProductNoStmt === false) {
-            die(print_r(sqlsrv_errors(), true));
-        }
-
-        $row = sqlsrv_fetch_array($getLastProductNoStmt, SQLSRV_FETCH_ASSOC);
-        $lastProductNo = $row['lastProductNo'];
-
-        // Increment the last productNo by 1 to generate a unique product number
-        $productNo = $lastProductNo + 1;
-
-        $insertQuery = "INSERT INTO dbo.Product 
-                    (productNo, productName, quantityOnHand, serialNo, reorderLevel, reorderQuantity, reorderLeadTime, productVariation, unitPrice)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Prepare the SQL query with a parameter placeholder for the stored procedure
+        $insertQuery = "{CALL AddProduct(?, ?, ?, ?, ?, ?, ?, ?)}";
         $insertParams = array(
-            $productNo, $productName, $quantity, $serialNumber, $reorderLevel, $reorderQuantity, $leadTime, $variations, $sellingPrice
+            array($productName, SQLSRV_PARAM_IN),
+            array($quantity, SQLSRV_PARAM_IN),
+            array($serialNumber, SQLSRV_PARAM_IN),
+            array($reorderLevel, SQLSRV_PARAM_IN),
+            array($reorderQuantity, SQLSRV_PARAM_IN),
+            array($leadTime, SQLSRV_PARAM_IN),
+            array($variations, SQLSRV_PARAM_IN),
+            array($sellingPrice, SQLSRV_PARAM_IN)
         );
 
+        // Prepare the SQL statement
         $stmt = sqlsrv_prepare($this->conn, $insertQuery, $insertParams);
+
         if ($stmt === false) {
             // Handle prepare statement error
             die(print_r(sqlsrv_errors(), true));
         }
 
+        // Execute the prepared statement
         $insertResult = sqlsrv_execute($stmt);
 
         if ($insertResult === false) {
@@ -54,7 +50,6 @@ class ProductManager
             // No rows affected, potential issue with insertion
             return 2; // Error occurred while adding the product
         } else {
-            //$this->logSuccess($productName);
             return 1; // Product added successfully
         }
     }

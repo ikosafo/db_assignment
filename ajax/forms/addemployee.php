@@ -358,32 +358,24 @@ $random = rand(1, 10) . date("Y-m-d");
                             success: function(text) {
                                 //alert(text);
 
-                                if (text == 1) {
-                                    //Load user form
-                                    $.ajax({
-                                        url: "ajax/forms/addemployee.php",
-                                        beforeSend: function() {
-                                            $.blockUI({
-                                                message: '<h3 style="margin-top:6px"><img src="https://jquery.malsup.com/block/busy.gif" /> Just a moment...</h3>'
-                                            });
-                                        },
-                                        success: function(text) {
-                                            $('#pageform_div').html(text);
-                                        },
-                                        error: function(xhr, ajaxOptions, thrownError) {
-                                            alert(xhr.status + " " + thrownError);
-                                        },
-                                        complete: function() {
-                                            $.unblockUI();
-                                        },
-                                    });
-                                    window.location.href = "/viewemployees";
-
-                                } else {
-                                    $("#error_loc").notify("Username already exists", {
-                                        position: "top"
-                                    });
-                                }
+                                $.ajax({
+                                    url: "ajax/forms/addemployee.php",
+                                    beforeSend: function() {
+                                        $.blockUI({
+                                            message: '<h3 style="margin-top:6px"><img src="https://jquery.malsup.com/block/busy.gif" /> Just a moment...</h3>'
+                                        });
+                                    },
+                                    success: function(text) {
+                                        $('#pageform_div').html(text);
+                                    },
+                                    error: function(xhr, ajaxOptions, thrownError) {
+                                        alert(xhr.status + " " + thrownError);
+                                    },
+                                    complete: function() {
+                                        $.unblockUI();
+                                    },
+                                });
+                                window.location.href = "/viewemployees";
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 alert(xhr.status + " " + thrownError);
